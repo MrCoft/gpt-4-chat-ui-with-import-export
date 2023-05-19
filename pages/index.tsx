@@ -1,10 +1,43 @@
-import { useState, useRef, useEffect, FormEvent, KeyboardEvent} from "react";
+import React, { useState, useRef, useEffect, FormEvent, KeyboardEvent} from "react";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import CircularProgress from "@mui/material/CircularProgress";
 import Link from "next/link";
+import { faFileArrowDown } from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+
+interface GptChat {
+  systemMessage: string
+  messages: { role: string, content: string }[]
+  temperature: number
+  maximumLength: number
+  topP: number
+  frequencyPenalty: number
+  presencePenalty: number
+}
+
+const chatToJson = (chat: GptChat): string => {
+  return JSON.stringify(chat, null, 2);
+}
+
+const downloadFile = (json: string, fileName: string ) => {
+  // create file in browser
+  const blob = new Blob([json], { type: "application/json" });
+  const href = URL.createObjectURL(blob);
+
+  // create "a" HTLM element with href to file
+  const link = document.createElement("a");
+  link.href = href;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+
+  // clean up "a" element & remove ObjectURL
+  document.body.removeChild(link);
+  URL.revokeObjectURL(href);
+}
 
 export default function Home() {
   const [userInput, setUserInput] = useState("");
@@ -94,6 +127,15 @@ useEffect(() => {
     }
   };
 
+  const [chatName, setChatName] = useState("My GPT Chat")
+
+  const [systemMessage, setSystemMessage] = useState("You are a helpful assistant.")
+  const [temperature, setTemperature] = useState(1)
+  const [maximumLength, setMaximumLength] = useState(256)
+  const [topP, setTopP] = useState(1)
+  const [frequencyPenalty, setFrequencyPenalty] = useState(0)
+  const [presencePenalty, setPresencePenalty] = useState(0)
+
   return (
     <>
       <Head>
@@ -120,47 +162,65 @@ useEffect(() => {
         <div className={styles.cloud}>
           <div ref={messageListRef} className={styles.messagelist}>
             {messages.map((message, index) => {
+              // The latest message sent by the user will be animated while waiting for a response
               return (
-                // The latest message sent by the user will be animated while waiting for a response
-                <div
-                  key={index}
-                  className={
-                    message.role === "user" &&
-                    loading &&
-                    index === messages.length - 1
-                      ? styles.usermessagewaiting
-                      : message.role === "assistant"
-                      ? styles.apimessage
-                      : styles.usermessage
-                  }
-                >
-                  {/* Display the correct icon depending on the message type */}
-                  {message.role === "assistant" ? (
-                    <Image
-                      src="/openai.png"
-                      alt="AI"
-                      width="30"
-                      height="30"
-                      className={styles.boticon}
-                      priority={true}
-                    />
-                  ) : (
-                    <Image
-                      src="/usericon.png"
-                      alt="Me"
-                      width="30"
-                      height="30"
-                      className={styles.usericon}
-                      priority={true}
-                    />
-                  )}
-                  <div className={styles.markdownanswer}>
-                    {/* Messages are being rendered in Markdown format */}
-                    <ReactMarkdown linkTarget={"_blank"}>
-                      {message.content}
-                    </ReactMarkdown>
+                <React.Fragment key={index}>
+                  <div
+                    className={
+                      message.role === "user" &&
+                      loading &&
+                      index === messages.length - 1
+                        ? styles.usermessagewaiting
+                        : message.role === "assistant"
+                        ? styles.apimessage
+                        : styles.usermessage
+                    }
+                  >
+                    <div className="flex flex-row">
+                      {/* Display the correct icon depending on the message type */}
+                      {message.role === "assistant" ? (
+                        <Image
+                          src="/openai.png"
+                          alt="AI"
+                          width="30"
+                          height="30"
+                          className={styles.boticon}
+                          priority={true}
+                        />
+                      ) : (
+                        <Image
+                          src="/usericon.png"
+                          alt="Me"
+                          width="30"
+                          height="30"
+                          className={styles.usericon}
+                          priority={true}
+                        />
+                      )}
+                      <div>
+                        <div className={styles.markdownanswer}>
+                          {/* Messages are being rendered in Markdown format */}
+                          <ReactMarkdown linkTarget={"_blank"}>
+                            {message.content}
+                          </ReactMarkdown>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <button className="w-4 m-2" title="Download JSON" onClick={() => {
+                        downloadFile(chatToJson({
+                          systemMessage,
+                          messages: messages.slice(0, index + 1),
+                          temperature,
+                          maximumLength,
+                          topP,
+                          frequencyPenalty,
+                          presencePenalty
+                        }), `${chatName}.chat.json`)
+                      }}><FontAwesomeIcon icon={faFileArrowDown} size="xl" /></button>
+                    </div>
                   </div>
-                </div>
+                </React.Fragment>
               );
             })}
           </div>

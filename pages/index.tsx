@@ -1,12 +1,14 @@
-import React, { useState, useRef, useEffect, FormEvent, KeyboardEvent} from "react";
+import React, {useState, useRef, useEffect, FormEvent, KeyboardEvent, useCallback} from "react";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import CircularProgress from "@mui/material/CircularProgress";
 import Link from "next/link";
-import { faFileArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { faFileArrowDown, faClipboard } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {FileUploader} from "react-drag-drop-files";
+import {useCopyToClipboard} from "react-use";
 
 interface GptChat {
   systemMessage: string
@@ -20,6 +22,17 @@ interface GptChat {
 
 const chatToJson = (chat: GptChat): string => {
   return JSON.stringify(chat, null, 2);
+}
+
+const chatToMarkdown = (chat: GptChat): string => {
+  const blocks = [] as string[]
+  blocks.push("System Message")
+  blocks.push(`\`\`\`\n${chat.systemMessage.trim()}\n\`\`\``)
+    chat.messages.forEach((message, index) => {
+        blocks.push(`${message.role.charAt(0).toUpperCase() + message.role.slice(1)}`)
+        blocks.push(`\`\`\`\n${message.content}\n\`\`\``)
+    })
+  return blocks.join("\n\n")
 }
 
 const downloadFile = (json: string, fileName: string ) => {
@@ -37,6 +50,15 @@ const downloadFile = (json: string, fileName: string ) => {
   // clean up "a" element & remove ObjectURL
   document.body.removeChild(link);
   URL.revokeObjectURL(href);
+}
+
+async function parseJsonFile(file: File) {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader()
+    fileReader.onload = event => resolve(JSON.parse(event.target.result))
+    fileReader.onerror = error => reject(error)
+    fileReader.readAsText(file)
+  })
 }
 
 export default function Home() {
@@ -136,6 +158,19 @@ useEffect(() => {
   const [frequencyPenalty, setFrequencyPenalty] = useState(0)
   const [presencePenalty, setPresencePenalty] = useState(0)
 
+  const onUpload = useCallback(async (file: File) => {
+    const json = await parseJsonFile(file) as GptChat
+    setSystemMessage(json.systemMessage)
+    setMessages(json.messages)
+    setTemperature(json.temperature)
+    setMaximumLength(json.maximumLength)
+    setTopP(json.topP)
+    setFrequencyPenalty(json.frequencyPenalty)
+    setPresencePenalty(json.presencePenalty)
+  }, [])
+
+  const [state, copyToClipboard] = useCopyToClipboard();
+
   return (
     <>
       <Head>
@@ -216,8 +251,21 @@ useEffect(() => {
                           topP,
                           frequencyPenalty,
                           presencePenalty
-                        }), `${chatName}.chat.json`)
+                        }), `${chatName} chat msg ${index + 1}.json`)
                       }}><FontAwesomeIcon icon={faFileArrowDown} size="xl" /></button>
+                      <button className="w-4 ml-1" onClick={() => {
+                        copyToClipboard(chatToMarkdown({
+                          systemMessage,
+                          messages: messages.slice(0, index + 1),
+                          temperature,
+                          maximumLength,
+                          topP,
+                          frequencyPenalty,
+                          presencePenalty
+                        }))
+                      }}>
+                        <FontAwesomeIcon icon={faClipboard} size="xl" />
+                      </button>
                     </div>
                   </div>
                 </React.Fragment>
@@ -277,6 +325,7 @@ useEffect(() => {
             </p>
           </div>
         </div>
+        <FileUploader handleChange={onUpload} types={["json"]}></FileUploader>
       </main>
     </>
   );

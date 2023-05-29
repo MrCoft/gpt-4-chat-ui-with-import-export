@@ -6,6 +6,7 @@ import {useCopyToClipboard} from "react-use";
 import {Chat} from "@/components/Chat";
 import {ImportArea} from "@/components/ImportArea";
 import {Footer} from "@/components/Footer";
+import {SystemMessage} from "@/components/SystemMessage";
 
 export default function Home() {
   const [userInput, setUserInput] = useState("");
@@ -37,6 +38,7 @@ export default function Home() {
         </div>
       </div>
       <main className={styles.main}>
+        <SystemMessage />
         <Chat />
         <Footer />
         <ImportArea />

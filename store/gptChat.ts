@@ -17,9 +17,7 @@ interface GptChatState {
 
 export const useGptChatStore = create(devtools(
     immer<GptChatState>((set) => ({
-        messages: [
-            { role: "assistant", content: "Hi there! How can I help?" },
-        ],
+        messages: [],
         settings: {
             systemMessage: "You are a helpful assistant.",
             temperature: 1,

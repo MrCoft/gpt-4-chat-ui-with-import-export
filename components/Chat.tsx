@@ -5,6 +5,7 @@ import {shallow} from "zustand/shallow";
 import {Message} from "@/components/Message";
 import {MessageButtons} from "@/components/MessageButtons";
 import {Role} from "@/types/gptChat";
+import {ChatName} from "@/components/ChatName";
 
 export function Chat() {
     const [userInput, setUserInput] = useState("");
@@ -91,6 +92,8 @@ export function Chat() {
 
     return (
         <>
+            <ChatName />
+
             {/*Chat area*/}
             <div className="w-[75vw] h-[65vh] bg-[#0e1524] rounded-lg border border-[#30373d] flex justify-center items-center">
                 {/*Scroller*/}
@@ -102,7 +105,7 @@ export function Chat() {
                             messageContent={message.content}
                             isLoading={isLoading && index === messages.length - 1}
                         >
-                            <MessageButtons messageIndex={index} />
+                            {message.role === "assistant" && index > 0 && <MessageButtons messageIndex={index} />}
                         </Message>
                     )}
                 </div>

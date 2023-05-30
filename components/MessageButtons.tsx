@@ -82,7 +82,7 @@ export function MessageButtons(props: MessageButtonsProps) {
             </Tooltip>
             <Snackbar open={open} anchorOrigin={{vertical: "top", horizontal: "center"}} autoHideDuration={2500}
                       onClose={handleClose}>
-                <Alert variant="filled" severity="success" sx={{width: '100%'}}>
+                <Alert severity="success" sx={{width: '100%'}}>
                     {alertText}
                 </Alert>
             </Snackbar>

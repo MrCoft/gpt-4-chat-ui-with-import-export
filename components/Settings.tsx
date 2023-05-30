@@ -31,7 +31,7 @@ export function Settings() {
     }, [setSettings])
 
     return (
-        <>
+        <div>
             <Typography gutterBottom variant="h4">Settings</Typography>
             {/*<Divider variant="middle" className="mb-4"/>*/}
             <Box>
@@ -76,6 +76,6 @@ export function Settings() {
                     step={0.01}
                 />
             </Box>
-        </>
+        </div>
     )
 }

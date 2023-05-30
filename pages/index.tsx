@@ -48,14 +48,14 @@ export default function Home() {
             <div className="flex flex-col h-screen">
                 <div className="flex-[1_1_0] flex flex-row gap-8 px-8 pt-8">
                     {/*NOTE: min-w-0 is a hack to properly constrain flex children*/}
-                    <aside className="flex-[1_1_20%] min-w-0">
+                    <aside className="flex-[1_1_17.5%] min-w-0">
                         <ChatName/>
                         <ImportArea/>
                     </aside>
-                    <main className="flex-[1_1_60%]">
+                    <main className="flex-[1_1_65%]">
                         <Chat/>
                     </main>
-                    <aside className="flex-[1_1_20%] min-w-0">
+                    <aside className="flex-[1_1_17.5%] min-w-0 flex flex-col justify-between">
                         <SystemMessage/>
                         <Settings/>
                     </aside>

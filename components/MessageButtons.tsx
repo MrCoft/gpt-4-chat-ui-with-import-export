@@ -27,14 +27,14 @@ export interface MessageButtonsProps {
 }
 
 export function MessageButtons(props: MessageButtonsProps) {
-    const { messages, settings, chatName } = useGptChatStore((state) => ({
+    const {messages, settings, chatName} = useGptChatStore((state) => ({
         messages: state.messages,
         settings: state.settings,
         chatName: state.chatName,
     }), shallow);
 
     const messagesUpToNow = useMemo(() =>
-        messages.slice(0, props.messageIndex + 1),
+            messages.slice(0, props.messageIndex + 1),
         [messages, props.messageIndex]
     )
 
@@ -48,7 +48,7 @@ export function MessageButtons(props: MessageButtonsProps) {
                     settings,
                 }))
             }}>
-                <FontAwesomeIcon icon={faClipboard} size="xl" />
+                <FontAwesomeIcon icon={faClipboard} size="xl"/>
             </button>
             <button className="w-4 ml-1" title="Download JSON" onClick={() => {
                 downloadFile(stateToJson({
@@ -56,7 +56,7 @@ export function MessageButtons(props: MessageButtonsProps) {
                     settings,
                 }), `${chatName} chat msg ${props.messageIndex + 1}.json`)
             }}>
-                <FontAwesomeIcon icon={faFileArrowDown} size="xl" />
+                <FontAwesomeIcon icon={faFileArrowDown} size="xl"/>
             </button>
         </>
     )

@@ -2,7 +2,7 @@ import {useGptChatStore} from "@/store/gptChat";
 import {shallow} from "zustand/shallow";
 
 export function ChatName() {
-    const { chatName, setChatName } = useGptChatStore((state) => ({
+    const {chatName, setChatName} = useGptChatStore((state) => ({
         chatName: state.chatName,
         setChatName: state.actions.setChatName,
     }), shallow);

@@ -1,10 +1,10 @@
-import {AppBar, Container, Toolbar, Typography, Box, IconButton, Menu, MenuIcon} from "@mui/material";
+import {AppBar, Container, Toolbar, Typography, Box, IconButton, Menu} from "@mui/material";
 import React from "react";
 
 export function Header() {
     return (
         <AppBar position="static">
-            <Container maxWidth={null}>
+            <Container maxWidth={false}>
                 <Toolbar disableGutters>
                     {/*<AdbIcon sx={{display: {xs: 'none', md: 'flex'}, mr: 1}}/>*/}
                     <Typography

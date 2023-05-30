@@ -122,7 +122,6 @@ export function Chat() {
                             onKeyDown={handleEnter}
                             inputRef={textAreaRef}
                             autoFocus={false}
-                            maxLength={512}
                             value={userInput}
                             onChange={(e) => setUserInput(e.target.value)}
                             className="w-full"

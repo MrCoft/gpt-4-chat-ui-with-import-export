@@ -5,8 +5,8 @@ import {useCopyToClipboard} from "react-use";
 import {useGptChatStore} from "@/store/gptChat";
 import {shallow} from "zustand/shallow";
 import {GptChatState} from "@/types/gptChat";
-import {useMemo} from "react";
-import {Tooltip} from "@mui/material";
+import {useCallback, useMemo, useState} from "react";
+import {Alert, Snackbar, Tooltip} from "@mui/material";
 
 const stateToJson = (state: GptChatState): string => {
     return JSON.stringify(state, null, 2);
@@ -41,11 +41,28 @@ export function MessageButtons(props: MessageButtonsProps) {
 
     const [_, copyToClipboard] = useCopyToClipboard();
 
+    const [open, setOpen] = useState(false);
+    const [alertText, setAlertText] = useState("")
+
+    const onCopyToClipboard = useCallback((value: string) => {
+        copyToClipboard(value)
+        setAlertText("Copied to clipboard")
+        setOpen(true)
+    }, [copyToClipboard, setOpen])
+
+    const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
+
     return (
         <>
             <Tooltip TransitionProps={{timeout: 50}} title="Copy markdown to clipboard">
                 <button className="w-4 m-2" onClick={() => {
-                    copyToClipboard(stateToMarkdown({
+                    onCopyToClipboard(stateToMarkdown({
                         messages: messagesUpToNow,
                         settings,
                     }))
@@ -63,6 +80,12 @@ export function MessageButtons(props: MessageButtonsProps) {
                     <FontAwesomeIcon icon={faFileArrowDown} size="xl"/>
                 </button>
             </Tooltip>
+            <Snackbar open={open} anchorOrigin={{vertical: "top", horizontal: "center"}} autoHideDuration={2500}
+                      onClose={handleClose}>
+                <Alert variant="filled" severity="success" sx={{width: '100%'}}>
+                    {alertText}
+                </Alert>
+            </Snackbar>
         </>
     )
 }

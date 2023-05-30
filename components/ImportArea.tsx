@@ -4,9 +4,10 @@ import {GptChatState} from "@/types/gptChat";
 import {useGptChatStore} from "@/store/gptChat";
 import {shallow} from "zustand/shallow";
 import {parseJsonFile} from "@/utils/parseJsonFile";
+import {Typography} from "@mui/material";
 
 export function ImportArea() {
-    const { setMessages, setSettings, setChatName } = useGptChatStore((state) => ({
+    const {setMessages, setSettings, setChatName} = useGptChatStore((state) => ({
         setMessages: state.actions.setMessages,
         setSettings: state.actions.setSettings,
         setChatName: state.actions.setChatName
@@ -44,6 +45,7 @@ export function ImportArea() {
 
     return (
         <>
+            <Typography gutterBottom variant="h4">Import</Typography>
             <FileUploader handleChange={onUpload} types={["json"]} classes="!h-40"></FileUploader>
         </>
     )

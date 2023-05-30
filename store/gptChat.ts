@@ -1,6 +1,6 @@
-import { create } from "zustand";
-import { devtools } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
+import {create} from "zustand";
+import {devtools} from "zustand/middleware";
+import {immer} from "zustand/middleware/immer";
 import {Message, Settings} from "@/types/gptChat";
 
 interface GptChatState {
@@ -21,7 +21,7 @@ export const useGptChatStore = create(devtools(
         settings: {
             systemMessage: "You are a helpful assistant.",
             temperature: 1,
-            maximumLength: 256,
+            maximumLength: 2048,
             topP: 1,
             frequencyPenalty: 0,
             presencePenalty: 0,
@@ -41,7 +41,7 @@ export const useGptChatStore = create(devtools(
 
             setSettings: (settings) =>
                 set((state) => {
-                    state.settings = { ...state.settings, ...settings };
+                    state.settings = {...state.settings, ...settings};
                 }),
 
             setChatName: (chatName: string) =>

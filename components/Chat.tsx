@@ -80,7 +80,7 @@ export function Chat() {
     }, [handleError, messages, pushMessage, userInput]);
 
     // Prevent blank submissions and allow for multiline input
-    const handleEnter = useCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
+    const handleEnter = useCallback((e: KeyboardEvent<HTMLDivElement>) => {
         if (e.key === "Enter" && userInput) {
             if (!e.shiftKey && userInput) {
                 handleSubmit(e);
@@ -116,9 +116,10 @@ export function Chat() {
                         <TextField
                             id="userInput"
                             name="userInput"
+                            multiline
                             placeholder={isLoading ? "Waiting for response..." : "Type your question..."}
                             disabled={isLoading}
-                            InputLabelProps={{onKeyDown: handleEnter}}
+                            onKeyDown={handleEnter}
                             inputRef={textAreaRef}
                             autoFocus={false}
                             maxLength={512}
@@ -130,11 +131,11 @@ export function Chat() {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="absolute bottom-[1.5rem] right-4 color-[#a5a2a2] bg-transparent p-[0.3rem] border-none flex"
+                            className="absolute bottom-[0.875rem] right-4 color-[#a5a2a2] bg-transparent p-[0.3rem] border-none flex"
                         >
                             {
                                 isLoading ? (
-                                    <div className="absolute top-[0.2rem] right-[0.25rem]">
+                                    <div className="absolute bottom-[-0.1rem] right-[0.25rem]">
                                         <CircularProgress color="inherit" size={20}/>
                                     </div>
                                 ) : (

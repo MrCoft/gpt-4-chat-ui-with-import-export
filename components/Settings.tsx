@@ -1,38 +1,81 @@
-import {Slider, Tooltip, Typography} from "@mui/material";
-import {SliderValueLabelProps} from "@mui/material/Slider";
+import {Typography, Box} from "@mui/material";
 import {useGptChatStore} from "@/store/gptChat";
 import {shallow} from "zustand/shallow";
 import {useCallback} from "react";
-
-function ValueLabelComponent(props: SliderValueLabelProps) {
-    const { children, value } = props;
-
-    return (
-        <Tooltip enterTouchDelay={0} placement="top" title={value}>
-            {children}
-        </Tooltip>
-    );
-}
+import {MySlider} from "@/components/MySlider";
 
 export function Settings() {
-    const { settings, setSettings } = useGptChatStore((state) => ({
+    const {settings, setSettings} = useGptChatStore((state) => ({
         settings: state.settings,
         setSettings: state.actions.setSettings,
     }), shallow);
 
-    const setFrequencyPenalty = useCallback((event:Event, frequencyPenalty: number | number[]) => {
-        setSettings({ frequencyPenalty: frequencyPenalty as number })
+    const setTemperature = useCallback((temperature: number) => {
+        setSettings({temperature})
+    }, [setSettings])
+
+    const setMaximumLength = useCallback((maximumLength: number) => {
+        setSettings({maximumLength})
+    }, [setSettings])
+
+    const setTopP = useCallback((topP: number) => {
+        setSettings({topP})
+    }, [setSettings])
+
+    const setFrequencyPenalty = useCallback((frequencyPenalty: number) => {
+        setSettings({frequencyPenalty})
+    }, [setSettings])
+
+    const setPresencePenalty = useCallback((presencePenalty: number) => {
+        setSettings({presencePenalty})
     }, [setSettings])
 
     return (
-        <div className="w-50">
-            <Typography gutterBottom>Top P {settings.frequencyPenalty}</Typography>
-            <Slider
-                valueLabelDisplay="auto"
-                slots={{valueLabel: ValueLabelComponent}}
-                value={settings.frequencyPenalty}
-                onChange={setFrequencyPenalty}
-            />
-        </div>
+        <>
+            <Typography gutterBottom variant="h4">Settings</Typography>
+            {/*<Divider variant="middle" className="mb-4"/>*/}
+            <Box>
+                <MySlider
+                    label="Temperature"
+                    value={settings.temperature}
+                    onChange={setTemperature}
+                    min={0}
+                    max={2}
+                    step={0.01}
+                />
+                <MySlider
+                    label="Maximum length"
+                    value={settings.maximumLength}
+                    onChange={setMaximumLength}
+                    min={1}
+                    max={2048}
+                    step={1}
+                />
+                <MySlider
+                    label="Top P"
+                    value={settings.topP}
+                    onChange={setTopP}
+                    min={0}
+                    max={1}
+                    step={0.01}
+                />
+                <MySlider
+                    label="Frequency penalty"
+                    value={settings.frequencyPenalty}
+                    onChange={setFrequencyPenalty}
+                    min={0}
+                    max={2}
+                    step={0.01}
+                />
+                <MySlider
+                    label="Presence penalty"
+                    value={settings.presencePenalty}
+                    onChange={setPresencePenalty}
+                    min={0}
+                    max={2}
+                    step={0.01}
+                />
+            </Box>
+        </>
     )
 }

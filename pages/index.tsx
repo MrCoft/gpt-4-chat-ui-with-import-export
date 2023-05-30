@@ -50,9 +50,6 @@ export default function Home() {
                     {/*NOTE: min-w-0 is a hack to properly constrain flex children*/}
                     <aside className="flex-[1_1_20%] min-w-0">
                         <ChatName/>
-                        <Typography variant="h5" gutterBottom>
-                            Import
-                        </Typography>
                         <ImportArea/>
                     </aside>
                     <main className="flex-[1_1_60%]">

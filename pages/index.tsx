@@ -12,57 +12,59 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import {Settings} from "@/components/Settings";
-import {Typography} from "@mui/material";
+import {StyledEngineProvider, ThemeProvider, Typography} from "@mui/material";
 import {ChatName} from "@/components/ChatName";
+import {theme} from "@/styles/muiTheme";
 
 export default function Home() {
-  const [userInput, setUserInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hi there! How can I help?" },
-  ]);
+    const [userInput, setUserInput] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [messages, setMessages] = useState([
+        {role: "assistant", content: "Hi there! How can I help?"},
+    ]);
 
-  return (
-    <>
-      {/*<Head>*/}
-      {/*  <title>Chat UI</title>*/}
-      {/*  <meta name="description" content="OpenAI interface" />*/}
-      {/*  <meta name="viewport" content="width=device-width, initial-scale=1" />*/}
-      {/*  <link rel="icon" href="/favicon.ico" />*/}
-      {/*</Head>*/}
-      {/*<div className={styles.topnav}>*/}
-      {/*  <div className={styles.navlogo}>*/}
-      {/*    <Link href="/">Chat UI</Link>*/}
-      {/*  </div>*/}
-      {/*  <div className={styles.navlinks}>*/}
-      {/*    <a*/}
-      {/*      href="https://platform.openai.com/docs/models/gpt-4"*/}
-      {/*      target="_blank"*/}
-      {/*    >*/}
-      {/*      Docs*/}
-      {/*    </a>*/}
-      {/*    */}
-      {/*  </div>*/}
-      {/*</div>*/}
-      <div className="flex flex-col h-screen">
-        <div className="flex-[1_1_0] flex flex-row gap-8 px-8 pt-8">
-          <aside className="flex-[1_1_20%] overflow-auto">
-            <ChatName />
-            <Typography variant="h5" gutterBottom>
-              Import
-            </Typography>
-            <ImportArea />
-          </aside>
-          <main className="flex-[1_1_60%]">
-            <Chat />
-          </main>
-          <aside className="flex-[1_1_20%] overflow-auto">
-            <SystemMessage />
-            <Settings />
-          </aside>
-        </div>
-        <Footer />
-      </div>
-    </>
-  );
+    return (
+        <ThemeProvider theme={theme}>
+            {/*<Head>*/}
+            {/*  <title>Chat UI</title>*/}
+            {/*  <meta name="description" content="OpenAI interface" />*/}
+            {/*  <meta name="viewport" content="width=device-width, initial-scale=1" />*/}
+            {/*  <link rel="icon" href="/favicon.ico" />*/}
+            {/*</Head>*/}
+            {/*<div className={styles.topnav}>*/}
+            {/*  <div className={styles.navlogo}>*/}
+            {/*    <Link href="/">Chat UI</Link>*/}
+            {/*  </div>*/}
+            {/*  <div className={styles.navlinks}>*/}
+            {/*    <a*/}
+            {/*      href="https://platform.openai.com/docs/models/gpt-4"*/}
+            {/*      target="_blank"*/}
+            {/*    >*/}
+            {/*      Docs*/}
+            {/*    </a>*/}
+            {/*    */}
+            {/*  </div>*/}
+            {/*</div>*/}
+            <div className="flex flex-col h-screen">
+                <div className="flex-[1_1_0] flex flex-row gap-8 px-8 pt-8">
+                    {/*NOTE: min-w-0 is a hack to properly constrain flex children*/}
+                    <aside className="flex-[1_1_20%] min-w-0">
+                        <ChatName/>
+                        <Typography variant="h5" gutterBottom>
+                            Import
+                        </Typography>
+                        <ImportArea/>
+                    </aside>
+                    <main className="flex-[1_1_60%]">
+                        <Chat/>
+                    </main>
+                    <aside className="flex-[1_1_20%] min-w-0">
+                        <SystemMessage/>
+                        <Settings/>
+                    </aside>
+                </div>
+                <Footer/>
+            </div>
+        </ThemeProvider>
+    );
 }

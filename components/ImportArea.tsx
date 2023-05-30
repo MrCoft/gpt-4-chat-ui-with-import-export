@@ -44,7 +44,7 @@ export function ImportArea() {
 
     return (
         <>
-            <FileUploader handleChange={onUpload} types={["json"]}></FileUploader>
+            <FileUploader handleChange={onUpload} types={["json"]} classes="!h-40"></FileUploader>
         </>
     )
 }

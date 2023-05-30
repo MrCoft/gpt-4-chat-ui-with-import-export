@@ -13,7 +13,7 @@ export function SystemMessage() {
     }, [setSettings])
 
     return (
-        <div className="w-[75vw] mb-8 text-left">
+        <div className="w-full mb-8 text-left">
             <label htmlFor="chatName" className="text-[1.1rem]">System message:</label>
             <input
                 id="chatName"

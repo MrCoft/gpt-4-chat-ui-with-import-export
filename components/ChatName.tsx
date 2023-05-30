@@ -8,7 +8,7 @@ export function ChatName() {
     }), shallow);
 
     return (
-        <div className="w-[75vw] mb-8 text-left">
+        <div className="mb-8 text-left">
             <label htmlFor="chatName" className="text-[1.1rem]">Chat file name:</label>
             <input
                 id="chatName"

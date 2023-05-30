@@ -6,6 +6,7 @@ import {Message} from "@/components/Message";
 import {MessageButtons} from "@/components/MessageButtons";
 import {Role} from "@/types/gptChat";
 import {ChatName} from "@/components/ChatName";
+import {TextareaAutosize} from "@mui/material";
 
 export function Chat() {
     const [userInput, setUserInput] = useState("");
@@ -91,11 +92,9 @@ export function Chat() {
     }, [handleSubmit, userInput]);
 
     return (
-        <>
-            <ChatName />
-
+        <div className="flex flex-col h-full">
             {/*Chat area*/}
-            <div className="w-[75vw] h-[65vh] bg-[#0e1524] rounded-lg border border-[#30373d] flex justify-center items-center">
+            <div className="w-full flex-[1_0_0] overflow-y-auto bg-[#0e1524] rounded-lg border border-[#30373d] flex justify-center items-center">
                 {/*Scroller*/}
                 <div ref={messageListRef} className="w-full h-full overflow-y-auto rounded-lg">
                     {messages.map((message, index) =>
@@ -111,27 +110,26 @@ export function Chat() {
                 </div>
             </div>
 
-            <div className="flex justify-center items-center relative pt-8 flex-col">
-                <div className="relative">
+            <div className="pt-8">
+                <div className="relative mb-[-7px]">
                     <form onSubmit={handleSubmit}>
-                        <textarea
+                        <TextareaAutosize
                             disabled={isLoading}
                             onKeyDown={handleEnter}
                             ref={textAreaRef}
                             autoFocus={false}
-                            rows={1}
                             maxLength={512}
+                            placeholder={isLoading ? "Waiting for response..." : "Type your question..."}
                             id="userInput"
                             name="userInput"
-                            placeholder={isLoading ? "Waiting for response..." : "Type your question..."}
                             value={userInput}
                             onChange={(e) => setUserInput(e.target.value)}
-                            className="relative resize-none text-[1.1rem] px-8 py-4 w-[75vw] rounded-lg border border-[#30373d] bg-[#0e1524] text-[#ECECF1] outline-none"
+                            className="w-full rounded-lg border border-[#30373d] bg-[#0e1524] text-[#ECECF1] outline-none px-8 py-4 text-[1.1rem]"
                             />
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="absolute top-3.5 right-4 color-[#a5a2a2] bg-transparent p-[0.3rem] border-none flex"
+                            className="absolute bottom-[1.5rem] right-4 color-[#a5a2a2] bg-transparent p-[0.3rem] border-none flex"
                         >
                             {
                                 isLoading ? (
@@ -153,6 +151,6 @@ export function Chat() {
                     </form>
                 </div>
             </div>
-        </>
+        </div>
     )
 }

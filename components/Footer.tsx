@@ -3,7 +3,7 @@ import React from "react";
 
 export function Footer() {
     return (
-        <div className="flex justify-center items-center relative flex-col">
+        <div className="h-[9rem] text-center">
             <div className="text-[#5f6368] text-[0.8rem] m-6">
                 <p>
                     Powered by{" "}

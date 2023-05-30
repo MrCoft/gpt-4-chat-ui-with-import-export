@@ -42,21 +42,21 @@ export function MessageButtons(props: MessageButtonsProps) {
 
     return (
         <>
-            <button className="w-4 m-2" title="Download JSON" onClick={() => {
-                downloadFile(stateToJson({
-                    messages: messagesUpToNow,
-                    settings,
-                }), `${chatName} chat msg ${props.messageIndex + 1}.json`)
-            }}>
-                <FontAwesomeIcon icon={faFileArrowDown} size="xl" />
-            </button>
-            <button className="w-4 ml-1" title="Copy markdown to clipboard" onClick={() => {
+            <button className="w-4 m-2" title="Copy markdown to clipboard" onClick={() => {
                 copyToClipboard(stateToMarkdown({
                     messages: messagesUpToNow,
                     settings,
                 }))
             }}>
                 <FontAwesomeIcon icon={faClipboard} size="xl" />
+            </button>
+            <button className="w-4 ml-1" title="Download JSON" onClick={() => {
+                downloadFile(stateToJson({
+                    messages: messagesUpToNow,
+                    settings,
+                }), `${chatName} chat msg ${props.messageIndex + 1}.json`)
+            }}>
+                <FontAwesomeIcon icon={faFileArrowDown} size="xl" />
             </button>
         </>
     )

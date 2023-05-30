@@ -46,7 +46,7 @@ export function ImportArea() {
     return (
         <>
             <Typography gutterBottom variant="h4">Import</Typography>
-            <FileUploader handleChange={onUpload} types={["json"]} classes="!h-40">
+            <FileUploader handleChange={onUpload} types={["json"]} classes="file-uploader">
                 <label
                     className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer bg-gray-900 border-gray-500 hover:bg-gray-800 hover:border-gray-400">
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -61,7 +61,6 @@ export function ImportArea() {
                             drag and drop</p>
                         <p className="text-xs text-gray-400">Chat .JSON</p>
                     </div>
-                    <input id="dropzone-file" type="file" className="hidden"/>
                 </label>
             </FileUploader>
         </>

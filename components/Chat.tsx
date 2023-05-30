@@ -126,7 +126,19 @@ export function Chat() {
                             value={userInput}
                             onChange={(e) => setUserInput(e.target.value)}
                             className="w-full"
-                            // className="w-full rounded-lg border border-[#30373d] bg-[#0e1524] text-[#ECECF1] outline-none px-8 py-4 text-[1.1rem]"
+                            sx={{
+                                '& .MuiInputBase-root': {
+                                    backgroundColor: "#0e1524",
+                                    color: "#ECECF1",
+                                    fontSize: "1.1rem",
+                                    padding: "1rem 2rem",
+                                    outline: "none",
+                                },
+                                // '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                //     borderWidth: '1px',
+                                //     borderColor: "#fff",
+                                // },
+                            }}
                         />
                         <button
                             type="submit"

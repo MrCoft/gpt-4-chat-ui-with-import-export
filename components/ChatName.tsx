@@ -11,15 +11,6 @@ export function ChatName() {
 
     return (
         <div className="mb-8 text-left">
-            {/* 1.1 rem roboto white */}
-            {/*<Box*/}
-            {/*    component="form"*/}
-            {/*    sx={{*/}
-            {/*        '& .MuiTextField-root': {m: 1, width: '25ch'},*/}
-            {/*    }}*/}
-            {/*    noValidate*/}
-            {/*    autoComplete="off"*/}
-            {/*>*/}
             <TextField
                 id="chatName"
                 label="Chat file name"
@@ -28,11 +19,12 @@ export function ChatName() {
                 value={chatName}
                 onChange={(e) => setChatName(e.target.value)}
                 className="w-full"
+                sx={{
+                    '& .MuiInputBase-root': {
+                        fontSize: '1.1rem'
+                    },
+                }}
             />
-            {/*</Box>*/}
-            {/*<input*/}
-            {/*    // className="text-[1.1rem] font-roboto ml-3 px-4 py-2 rounded-lg border border-[#30373d] bg-[#0e1524] text-[#ECECF1] outline-none"*/}
-            {/*/>*/}
         </div>
     )
 }

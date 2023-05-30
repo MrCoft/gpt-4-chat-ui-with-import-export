@@ -14,6 +14,10 @@ export const themeOptions: ThemeOptions = {
             default: '#121212',
             paper: '#121212',
         },
+        divider: '#30373d',
+    },
+    shape: {
+        borderRadius: 8,
     },
 };
 

@@ -5,8 +5,7 @@ import {shallow} from "zustand/shallow";
 import {Message} from "@/components/Message";
 import {MessageButtons} from "@/components/MessageButtons";
 import {Role} from "@/types/gptChat";
-import {ChatName} from "@/components/ChatName";
-import {TextareaAutosize} from "@mui/material";
+import {TextField} from "@mui/material";
 
 export function Chat() {
     const [userInput, setUserInput] = useState("");
@@ -15,7 +14,7 @@ export function Chat() {
     const messageListRef = useRef<HTMLDivElement>(null);
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-    const { messages, pushMessage } = useGptChatStore((state) => ({
+    const {messages, pushMessage} = useGptChatStore((state) => ({
         messages: state.messages,
         pushMessage: state.actions.pushMessage,
     }), shallow);
@@ -29,11 +28,11 @@ export function Chat() {
     }, [messages]);
 
     // Focus on input field
-        useEffect(() => {
-            if (textAreaRef.current) {
-                textAreaRef.current.focus();
-            }
-        }, []);
+    useEffect(() => {
+        if (textAreaRef.current) {
+            textAreaRef.current.focus();
+        }
+    }, []);
 
     // Handle errors
     const handleError = useCallback(() => {
@@ -54,7 +53,7 @@ export function Chat() {
         }
 
         setIsLoading(true);
-        const message = { role: "user" as Role, content: userInput };
+        const message = {role: "user" as Role, content: userInput};
         pushMessage(message);
 
         // Send chat history to API
@@ -63,7 +62,7 @@ export function Chat() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ messages: [...messages, message] }),
+            body: JSON.stringify({messages: [...messages, message]}),
         });
 
         // Reset user input
@@ -76,7 +75,7 @@ export function Chat() {
             return;
         }
 
-        pushMessage({ role: "assistant", content: data.result.content });
+        pushMessage({role: "assistant", content: data.result.content});
         setIsLoading(false);
     }, [handleError, messages, pushMessage, userInput]);
 
@@ -94,7 +93,8 @@ export function Chat() {
     return (
         <div className="flex flex-col h-full">
             {/*Chat area*/}
-            <div className="w-full flex-[1_0_0] overflow-y-auto bg-[#0e1524] rounded-lg border border-[#30373d] flex justify-center items-center">
+            <div
+                className="w-full flex-[1_0_0] overflow-y-auto bg-[#0e1524] rounded-lg border border-[#30373d] flex justify-center items-center">
                 {/*Scroller*/}
                 <div ref={messageListRef} className="w-full h-full overflow-y-auto rounded-lg">
                     {messages.map((message, index) =>
@@ -104,28 +104,29 @@ export function Chat() {
                             messageContent={message.content}
                             isLoading={isLoading && index === messages.length - 1}
                         >
-                            {message.role === "assistant" && index > 0 && <MessageButtons messageIndex={index} />}
+                            {message.role === "assistant" && index > 0 && <MessageButtons messageIndex={index}/>}
                         </Message>
                     )}
                 </div>
             </div>
 
             <div className="pt-8">
-                <div className="relative mb-[-7px]">
+                <div className="relative">
                     <form onSubmit={handleSubmit}>
-                        <TextareaAutosize
-                            disabled={isLoading}
-                            onKeyDown={handleEnter}
-                            ref={textAreaRef}
-                            autoFocus={false}
-                            maxLength={512}
-                            placeholder={isLoading ? "Waiting for response..." : "Type your question..."}
+                        <TextField
                             id="userInput"
                             name="userInput"
+                            placeholder={isLoading ? "Waiting for response..." : "Type your question..."}
+                            disabled={isLoading}
+                            InputLabelProps={{onKeyDown: handleEnter}}
+                            inputRef={textAreaRef}
+                            autoFocus={false}
+                            maxLength={512}
                             value={userInput}
                             onChange={(e) => setUserInput(e.target.value)}
-                            className="w-full rounded-lg border border-[#30373d] bg-[#0e1524] text-[#ECECF1] outline-none px-8 py-4 text-[1.1rem]"
-                            />
+                            className="w-full"
+                            // className="w-full rounded-lg border border-[#30373d] bg-[#0e1524] text-[#ECECF1] outline-none px-8 py-4 text-[1.1rem]"
+                        />
                         <button
                             type="submit"
                             disabled={isLoading}
@@ -134,7 +135,7 @@ export function Chat() {
                             {
                                 isLoading ? (
                                     <div className="absolute top-[0.2rem] right-[0.25rem]">
-                                        <CircularProgress color="inherit" size={20} />
+                                        <CircularProgress color="inherit" size={20}/>
                                     </div>
                                 ) : (
                                     // Send icon SVG in input field
@@ -143,7 +144,8 @@ export function Chat() {
                                         className="rotate-90 w-[1.2rem] h-[1.2rem] fill-current"
                                         xmlns="http://www.w3.org/2000/svg"
                                     >
-                                        <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+                                        <path
+                                            d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
                                     </svg>
                                 )
                             }

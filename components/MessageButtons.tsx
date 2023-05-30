@@ -6,6 +6,7 @@ import {useGptChatStore} from "@/store/gptChat";
 import {shallow} from "zustand/shallow";
 import {GptChatState} from "@/types/gptChat";
 import {useMemo} from "react";
+import {Tooltip} from "@mui/material";
 
 const stateToJson = (state: GptChatState): string => {
     return JSON.stringify(state, null, 2);
@@ -42,22 +43,26 @@ export function MessageButtons(props: MessageButtonsProps) {
 
     return (
         <>
-            <button className="w-4 m-2" title="Copy markdown to clipboard" onClick={() => {
-                copyToClipboard(stateToMarkdown({
-                    messages: messagesUpToNow,
-                    settings,
-                }))
-            }}>
-                <FontAwesomeIcon icon={faClipboard} size="xl"/>
-            </button>
-            <button className="w-4 ml-1" title="Download JSON" onClick={() => {
-                downloadFile(stateToJson({
-                    messages: messagesUpToNow,
-                    settings,
-                }), `${chatName} chat msg ${props.messageIndex + 1}.json`)
-            }}>
-                <FontAwesomeIcon icon={faFileArrowDown} size="xl"/>
-            </button>
+            <Tooltip TransitionProps={{timeout: 50}} title="Copy markdown to clipboard">
+                <button className="w-4 m-2" onClick={() => {
+                    copyToClipboard(stateToMarkdown({
+                        messages: messagesUpToNow,
+                        settings,
+                    }))
+                }}>
+                    <FontAwesomeIcon icon={faClipboard} size="xl"/>
+                </button>
+            </Tooltip>
+            <Tooltip TransitionProps={{timeout: 50}} title="Download JSON">
+                <button className="w-4 ml-1" onClick={() => {
+                    downloadFile(stateToJson({
+                        messages: messagesUpToNow,
+                        settings,
+                    }), `${chatName} chat msg ${props.messageIndex + 1}.json`)
+                }}>
+                    <FontAwesomeIcon icon={faFileArrowDown} size="xl"/>
+                </button>
+            </Tooltip>
         </>
     )
 }

@@ -32,8 +32,11 @@ export default function Home() {
                 <meta name="description" content="OpenAI interface"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1"/>
                 <link rel="icon" href="/favicon.ico"/>
+                <meta property="og:title" content="GPT 4 UI with Import/Export"/>
+                <meta property="og:type" content="website"/>
+                <meta property="og:image" content="/ogImage.png"/>
+                <meta property="og:url" content="https://coft.dev/gpt-ui"/>
             </Head>
-
 
             {/*<div className={styles.topnav}>*/}
             {/*    <div className={styles.navlogo}>*/}
